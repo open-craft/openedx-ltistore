@@ -9,10 +9,10 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 MESSAGES = {
-    "required": "This field is required.",
-    "required_pubkey_or_keyset": "LTI 1.3 requires either a public key or a keyset URL.",
-    "invalid_rsa_key": "Invalid RSA key format.",
-    "invalid_list_field": 'Should be a list (Example: ["id-1", "id-2", ...]).',
+    "required": _("This field is required."),
+    "required_pubkey_or_keyset": _("LTI 1.3 requires either a public key or a keyset URL."),
+    "invalid_rsa_key": _("Invalid RSA key format."),
+    "invalid_list_field": _('Should be a list (Example: ["id-1", "id-2", ...]).'),
 }
 
 
@@ -21,7 +21,7 @@ def validate_rsa_key(key):
     try:
         RSA.import_key(key)
     except ValueError:
-        raise ValidationError(_(MESSAGES["invalid_rsa_key"]))
+        raise ValidationError(MESSAGES["invalid_rsa_key"])
 
     return key
 
@@ -31,15 +31,21 @@ def validate_list_field(string):
     try:
         deserialized = json.loads(string)
     except ValueError:
-        raise ValidationError(_(MESSAGES["invalid_list_field"]))
+        raise ValidationError(MESSAGES["invalid_list_field"])
 
     if not isinstance(deserialized, list):
-        raise ValidationError(_(MESSAGES["invalid_list_field"]))
+        raise ValidationError(MESSAGES["invalid_list_field"])
 
 
 class LTIVersion(models.TextChoices):
     LTI_1P1 = "lti_1p1", _("LTI 1.1")
     LTI_1P3 = "lti_1p3", _("LTI 1.3")
+
+
+class LTIAdvantageAGS(models.TextChoices):
+    DISABLED = "disabled", _("Disabled")
+    DECLARATIVE = "declarative", _("Allow tools to submit grades only (declarative)")
+    PROGRAMMATIC = "programmatic", _("Allow tools to manage and submit grade (programmatic)")
 
 
 class ExternalLtiConfiguration(models.Model):
@@ -143,7 +149,20 @@ class ExternalLtiConfiguration(models.Model):
         "LTI 1.3 Public JWK",
         default=dict,
         blank=True,
+        editable=False,
         help_text=_("Platform's generated JWK keyset."),
+    )
+
+    # LTI 1.3 Advantage Related Variables
+    lti_advantage_enable_nrps = models.BooleanField(
+        "Enable LTI Advantage Names and Role Provisioning Services",
+        default=False,
+        help_text=_("Enable LTI Advantage Names and Role Provisioning Services."),
+    )
+    lti_advantage_deep_linking_enabled = models.BooleanField(
+        "Enable LTI Advantage Deep Linking",
+        default=False,
+        help_text=_("Enable LTI Advantage Deep Linking."),
     )
     lti_advantage_deep_linking_launch_url = models.URLField(
         "LTI Advantage Deep Linking launch URL",
@@ -151,6 +170,16 @@ class ExternalLtiConfiguration(models.Model):
         blank=True,
         help_text=_("""This is the LTI Advantage Deep Linking launch URL. If the LTI Tool
         does not provide one, use the same value as lti_1p3_launch_url."""),
+    )
+    lti_advantage_ags_mode = models.CharField(
+        "LTI Advantage Assignment and Grade Services Mode",
+        max_length=20,
+        choices=LTIAdvantageAGS.choices,
+        default=LTIAdvantageAGS.DECLARATIVE,
+        help_text=_("""Enable LTI Advantage Assignment and Grade Services and select the functionality
+        enabled for LTI tools. The "declarative" mode (default) will provide a tool with a LineItem
+        created from the XBlock settings, while the "programmatic" one will allow tools to manage,
+        create and link the grades.""")
     )
 
     def __str__(self):
@@ -177,16 +206,10 @@ class ExternalLtiConfiguration(models.Model):
                 )
             if not self.lti_1p3_tool_public_key and not self.lti_1p3_tool_keyset_url:
                 # Raise ValidationError if public key and keyset URL are missing.
-                validation_errors.update(
-                    {
-                        "lti_1p3_tool_public_key": _(
-                            MESSAGES["required_pubkey_or_keyset"]
-                        ),
-                        "lti_1p3_tool_keyset_url": _(
-                            MESSAGES["required_pubkey_or_keyset"]
-                        ),
-                    },
-                )
+                validation_errors.update({
+                    "lti_1p3_tool_public_key": MESSAGES["required_pubkey_or_keyset"],
+                    "lti_1p3_tool_keyset_url": MESSAGES["required_pubkey_or_keyset"],
+                })
 
         if validation_errors:
             raise ValidationError(validation_errors)
