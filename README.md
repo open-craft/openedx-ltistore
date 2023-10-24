@@ -46,8 +46,16 @@ Now any changes made to the source code should reflect in the application
 
 ## Adding LTI Tools to the store
 
-1. Go to `https://localhost:18010/admin`
-2. Look for `LTI_STORE` and add **LTI Configurations** by clicking `+ Add` button
+1. Go to `http://localhost:18000/admin`
+2. Look for `LTI_STORE` and add **External lti configurations** by clicking `+ Add` button
+
+## Use configuration on LTI consumer XBlock
+
+1. Go to `http://localhost:18000/admin`
+2. Look for `LTI_STORE` and go to **External lti configurations**
+3. On the list of external LTI configurations, note down the "Filter Key" value
+   of the configuration to use (Example: `lti_store:1`).
+4. Copy "Filter Key" to the "External ID" field on the LTI consumer XBlock.
 
 ## Linting
 
