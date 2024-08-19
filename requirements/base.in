@@ -1,4 +1,4 @@
-django<4.0
+django==4.2.5
 openedx-filters
 pycryptodomex
 pyjwkest

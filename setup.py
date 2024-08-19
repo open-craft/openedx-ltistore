@@ -2,6 +2,7 @@
 """
 Package metadata for openedx_ltistore
 """
+
 from gettext import find
 from importlib.metadata import entry_points
 import os
@@ -76,7 +77,7 @@ setup(
     url="https://github.com/openedx/openedx-ltistore",
     packages=find_packages(),
     include_package_data=True,
-    install_requires=["django<4.0"],
+    install_requires=["django<5.0"],
     python_requires=">=3.8",
     license="AGPL 3.0",
     zip_safe=False,
@@ -88,6 +89,7 @@ setup(
         "Natural Language :: English",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.11",
     ],
     entry_points={
         "lms.djangoapp": [
@@ -96,5 +98,5 @@ setup(
         "cms.djangoapp": [
             "lti_store = lti_store.apps:LtiStoreConfig",
         ],
-    }
+    },
 )
