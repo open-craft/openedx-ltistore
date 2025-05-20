@@ -76,7 +76,7 @@ setup(
     url="https://github.com/openedx/openedx-ltistore",
     packages=find_packages(),
     include_package_data=True,
-    install_requires=["django<4.0"],
+    install_requires=["django==4.2.21"],
     python_requires=">=3.8",
     license="AGPL 3.0",
     zip_safe=False,
