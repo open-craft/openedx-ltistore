@@ -1,6 +1,12 @@
+# Additional requirements for development of this application
+-c constraints.txt
+
 -r base.in
+
 pytest
 pytest-cov
 pytest-django
 black
 ddt
+tox
+tox-uv

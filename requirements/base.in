@@ -1,4 +1,7 @@
-django<4.0
+# Core requirements for using this application
+-c constraints.txt
+
+django
 openedx-filters
 pycryptodomex
 pyjwkest
