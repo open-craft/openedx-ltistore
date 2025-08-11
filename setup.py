@@ -143,7 +143,7 @@ setup(
     author_email="oscm@edx.org",
     url="https://github.com/openedx/openedx-ltistore",
     packages=find_packages(
-        include=["lti_store"],
+        include=["lti_store","lti_store.*"],
         exclude=["*tests"],
     ),
     include_package_data=True,
