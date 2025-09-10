@@ -149,8 +149,7 @@ class ExternalLtiConfiguration(models.Model):
         "LTI 1.3 Public JWK",
         default=dict,
         blank=True,
-        editable=False,
-        help_text=_("Platform's generated JWK keyset."),
+        help_text=_("Platform's generated JWK keyset. This will be generated automatically, no need to fill out."),
     )
 
     # LTI 1.3 Advantage Related Variables
