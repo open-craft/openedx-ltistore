@@ -4,6 +4,7 @@ from django.test import TestCase
 from unittest.mock import Mock
 from lti_store.models import ExternalLtiConfiguration
 from lti_store.apps import LtiStoreConfig as App
+from Cryptodome.PublicKey import RSA
 
 
 class TestGetLtiConfigurations(TestCase):
@@ -63,3 +64,29 @@ class TestGetLtiConfigurations(TestCase):
         )
         first.delete()
         second.delete()
+
+    def test_filter_includes_lti_1p3_public_jwk_field_in_serialized_config(self):
+        # Generate a test RSA key pair
+        key = RSA.generate(2048)
+        private_key_pem = key.export_key().decode('utf-8')
+        public_key_pem = key.publickey().export_key().decode('utf-8')
+
+        lti_config = ExternalLtiConfiguration.objects.create(
+            name="LTI 1.3 Config",
+            slug="lti-1p3-config",
+            version="lti_1p3",
+            lti_1p3_private_key=private_key_pem,
+            lti_1p3_tool_public_key=public_key_pem
+        )
+
+        data = self.filter_step.run_filter({}, f"{App.name}:lti-1p3-config", {})
+
+        config_data = data["configurations"][f"{App.name}:lti-1p3-config"]
+        self.assertIn("lti_1p3_public_jwk", config_data)
+
+        jwk_data = config_data['lti_1p3_public_jwk']
+        self.assertIsInstance(jwk_data, dict)
+        assert "keys" in jwk_data
+        assert jwk_data['keys'][0]['kid'] == lti_config.lti_1p3_private_key_id
+
+        lti_config.delete()
