@@ -60,17 +60,20 @@ class ExternalLtiConfiguration(models.Model):
 
     # LTI 1.1 Related variables
     lti_1p1_launch_url = models.CharField(
+        "LTI 1.1 Launch URL",
         max_length=255,
         blank=True,
         help_text=_("The URL of the external tool that initiates the launch."),
     )
     lti_1p1_client_key = models.CharField(
+        "LTI 1.1 Client Key",
         max_length=255,
         blank=True,
         help_text=_("Client key provided by the LTI tool provider."),
     )
 
     lti_1p1_client_secret = models.CharField(
+        "LTI 1.1 Client Secret",
         max_length=255,
         blank=True,
         help_text=_("Client secret provided by the LTI tool provider."),
