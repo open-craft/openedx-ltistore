@@ -52,10 +52,11 @@ Now any changes made to the source code should reflect in the application
 ## Use configuration on LTI consumer XBlock
 
 1. Go to `http://localhost:18000/admin`
-2. Look for `LTI_STORE` and go to **External lti configurations**
-3. On the list of external LTI configurations, note down the "Filter Key" value
+2. Set the `enable_external_config_filter` waffle flag|https://github.com/openedx/xblock-lti-consumer/blob/master/lti_consumer/plugin/compat.py#L23] for your course
+3. Look for `LTI_STORE` and go to **External lti configurations**
+4. On the list of external LTI configurations, note down the "Filter Key" value
    of the configuration to use (Example: `lti_store:1`).
-4. Copy "Filter Key" to the "External ID" field on the LTI consumer XBlock.
+5. Copy "Filter Key" to the "External ID" field on the LTI consumer XBlock.
 
 ## Linting
 
