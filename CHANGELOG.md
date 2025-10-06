@@ -4,7 +4,14 @@ Change Log
 Unreleased
 ----------
 
-*
+1.1.3 - 2025-10-06
+------------------
+
+### Fixed
+
+* Updated the readable name for LTI 1.1 fields. Making for a nicer admin
+  experience.
+
 
 1.1.2 - 2025-09-19
 ------------------
