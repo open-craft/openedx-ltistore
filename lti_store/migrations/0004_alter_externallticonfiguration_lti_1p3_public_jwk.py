@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("lti_store", "0002_add_lti_1p3_fields"),
+        ("lti_store", "0003_alter_externallticonfiguration_lti_1p1_client_key_and_more"),
     ]
 
     operations = [

@@ -4,6 +4,14 @@ Change Log
 Unreleased
 ----------
 
+1.1.4 - 2025-11-18
+------------------
+
+### Fixed
+
+* Fixes the migration conflict described in #37 where two migrations had the same number (0003).
+
+
 1.1.3 - 2025-10-06
 ------------------
 
